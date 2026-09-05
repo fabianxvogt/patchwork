@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0e1726" />
+    <title>Patchwork — Festival control room</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup"><span class="brand-mark" aria-hidden="true">✳</span><div><p class="eyebrow">PROJECT 65 / PATCHWORK</p><h1>Festival control room</h1></div></div>
+        <div class="top-actions"><button class="button button-quiet" id="newPlan">New plan</button><button class="button button-primary" id="savePlan">Save locally</button><span class="save-state" id="saveState">Saved just now</span></div>
+      </header>
+
+      <main>
+        <section class="hero-strip" aria-labelledby="planTitle">
+          <div><p class="eyebrow">BOUNDED RULE ENGINE <span class="status-dot"></span> LOCAL ONLY</p><h2 id="planTitle">Harbour Lights Festival</h2><p class="hero-copy">Shape the brief, then let the schedule, budget and kit stay in step.</p></div>
+          <div class="health-card"><span class="health-label">Plan health</span><strong id="healthScore">100%</strong><span id="healthDetail">0 conflicts · 4 acts</span></div>
+        </section>
+
+        <div class="workspace-grid">
+          <aside class="brief-panel panel" aria-label="Festival brief">
+            <div class="panel-heading"><div><p class="eyebrow">01 / BRIEF</p><h3>Decisions to keep</h3></div><span class="badge">editable</span></div>
+            <label class="field-label" for="festivalName">Festival name</label><input class="text-input" id="festivalName" maxlength="48" />
+            <label class="field-label" for="capacity">Audience capacity</label><div class="input-with-unit"><input class="text-input" id="capacity" type="number" min="100" max="10000" step="50" /><span>people</span></div>
+            <label class="field-label" for="budgetLimit">Production budget</label><div class="input-with-unit"><input class="text-input" id="budgetLimit" type="number" min="1000" max="500000" step="500" /><span>€</span></div>
+            <div class="rule-box"><span class="rule-icon">⌘</span><div><strong>Rule engine</strong><p>Two stages · one changeover buffer · kit cannot overlap.</p></div></div>
+            <div class="panel-footer"><button class="text-button" id="exportProject">Export project</button><button class="text-button" id="importProject">Import JSON</button><input type="file" accept="application/json,.json" id="filePicker" hidden /></div>
+          </aside>
+
+          <section class="main-panel" aria-label="Festival plan workspace">
+            <div class="tabs" role="tablist" aria-label="Plan views"><button class="tab active" role="tab" aria-selected="true" data-tab="schedule">Schedule <span id="scheduleCount">4</span></button><button class="tab" role="tab" aria-selected="false" data-tab="budget">Budget</button><button class="tab" role="tab" aria-selected="false" data-tab="equipment">Equipment</button></div>
+
+            <div class="view-toolbar"><div><p class="eyebrow" id="viewKicker">GENERATED VIEW / SCHEDULE</p><h3 id="viewTitle">The running order</h3></div><div class="toolbar-actions"><button class="button button-quiet" id="undoRevision" disabled>Undo revision</button><button class="button button-dark" id="regenerate">Regenerate plan</button></div></div>
+
+            <div class="change-bar"><div class="change-copy"><span class="sparkle">✦</span><div><strong>Request a supported change</strong><p>Regeneration follows the locked decisions below.</p></div></div><select id="changeRequest" class="select-input" aria-label="Supported layout change"><option value="balanced">Balance stages</option><option value="earlier">Move late acts earlier</option><option value="compact">Compact changeovers</option></select></div>
+
+            <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+            <div id="viewContent"></div>
+
+            <div class="conflict-panel" id="conflictPanel" hidden><div><p class="eyebrow">NEEDS A DECISION</p><h4 id="conflictTitle">Pinned choices collide</h4><p id="conflictCopy"></p></div><button class="button button-warning" id="resolveConflicts">Resolve and regenerate</button></div>
+          </section>
+        </div>
+      </main>
+
+      <footer class="bottom-bar"><span><span class="keyboard-key">⌘</span> All edits are local and exportable</span><div><button class="text-button" id="timetableExport">Export timetable</button><button class="text-button danger-link" id="resetPlan">Reset</button></div></footer>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
