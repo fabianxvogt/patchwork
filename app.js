@@ -1,12 +1,12 @@
 import { makeExamplePlan, blankPlan, calculate, regenerate, togglePin, updateEvent, addEvent, deleteEvent, duplicateEvent, normalizePlan, serialize, timetableCsv } from './engine.js';
 
-const STORAGE_KEY = 'patchwork-plan-v1';
+const STORAGE_KEY = 'patchwork-plan-v1'; const MAX_IMPORT_BYTES = 1024 * 1024;
 let plan = loadPlan(); let activeTab = 'schedule'; let pendingRevision = null;
 const $ = (id) => document.getElementById(id);
 const state = { plan, result: calculate(plan) };
 
 function loadPlan() { try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? normalizePlan(JSON.parse(raw)) : makeExamplePlan(); } catch { return makeExamplePlan(); } }
-function save(silent = false) { try { localStorage.setItem(STORAGE_KEY, serialize(plan)); $('saveState').textContent = 'Saved just now'; if (!silent) toast('Plan saved to this browser.'); } catch { $('saveState').textContent = 'Save unavailable'; if (!silent) toast('Could not save locally. Export a project file to keep this plan.', 'error'); } }
+function save(silent = false) { try { localStorage.setItem(STORAGE_KEY, serialize(plan)); $('saveState').textContent = 'Saved just now'; if (!silent) toast('Plan saved to this browser.'); return true; } catch { $('saveState').textContent = 'Save unavailable'; if (!silent) toast('Could not save locally. Export a project file to keep this plan.', 'error'); return false; } }
 function toast(message, tone = '') { const item = $('toast'); item.textContent = message; item.className = `toast show ${tone}`; window.setTimeout(() => { item.className = 'toast'; }, 2600); }
 function download(filename, content, type) { const url = URL.createObjectURL(new Blob([content], { type })); const link = document.createElement('a'); link.href = url; link.download = filename; link.click(); URL.revokeObjectURL(url); }
 function escapeHtml(value) { return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char])); }
@@ -67,8 +67,8 @@ $('resetPlan').addEventListener('click', () => { if (confirm('Reset to the Harbo
 $('exportProject').addEventListener('click', () => { download(`${plan.festivalName.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'patchwork-plan'}.patchwork.json`, serialize(plan), 'application/json'); toast('Project exported.'); });
 $('timetableExport').addEventListener('click', () => { download('patchwork-timetable.csv', timetableCsv(plan), 'text/csv'); toast('Timetable CSV exported.'); });
 $('importProject').addEventListener('click', () => $('filePicker').click());
-function importText(raw) { try { const imported = normalizePlan(JSON.parse(raw)); plan = imported; pendingRevision = null; state.plan = plan; render(); save(true); toast('Project reopened successfully.'); } catch (error) { toast(`Import failed: ${error.message} Current plan is unchanged.`, 'error'); } }
+function importText(raw) { try { if (new Blob([raw]).size > MAX_IMPORT_BYTES) throw new Error('Project file exceeds the 1 MB limit.'); const imported = normalizePlan(JSON.parse(raw)); plan = imported; pendingRevision = null; state.plan = plan; render(); const saved = save(true); toast(saved ? 'Project reopened successfully.' : 'Project reopened, but local save is unavailable. Export a project file to keep this plan.', saved ? '' : 'error'); } catch (error) { toast(`Import failed: ${error.message} Current plan is unchanged.`, 'error'); } }
 $('pasteImport').addEventListener('click', () => importText($('importText').value));
-$('filePicker').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; importText(await file.text()); event.target.value = ''; });
+$('filePicker').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; try { if (file.size > MAX_IMPORT_BYTES) throw new Error('Project file exceeds the 1 MB limit.'); importText(await file.text()); } catch (error) { toast(`Import failed: ${error.message} Current plan is unchanged.`, 'error'); } finally { event.target.value = ''; } });
 window.addEventListener('beforeunload', () => save(true));
 render();
