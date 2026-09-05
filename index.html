@@ -28,6 +28,7 @@
             <label class="field-label" for="budgetLimit">Production budget</label><div class="input-with-unit"><input class="text-input" id="budgetLimit" type="number" min="1000" max="500000" step="500" /><span>€</span></div>
             <div class="rule-box"><span class="rule-icon">⌘</span><div><strong>Rule engine</strong><p>Two stages · one changeover buffer · kit cannot overlap.</p></div></div>
             <div class="panel-footer"><button class="text-button" id="exportProject">Export project</button><button class="text-button" id="importProject">Import JSON</button><input type="file" accept="application/json,.json" id="filePicker" hidden /></div>
+            <details class="paste-import"><summary>Paste JSON instead</summary><label class="sr-only" for="importText">Project JSON</label><textarea id="importText" rows="5" placeholder="Paste a .patchwork.json export here" spellcheck="false"></textarea><button class="button button-dark" id="pasteImport">Import pasted JSON</button></details>
           </aside>
 
           <section class="main-panel" aria-label="Festival plan workspace">
@@ -48,6 +49,6 @@
       <footer class="bottom-bar"><span><span class="keyboard-key">⌘</span> All edits are local and exportable</span><div><button class="text-button" id="timetableExport">Export timetable</button><button class="text-button danger-link" id="resetPlan">Reset</button></div></footer>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script type="module" src="app.js"></script>
+    <script type="module" src="app.js?v=2"></script>
   </body>
 </html>

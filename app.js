@@ -67,6 +67,8 @@ $('resetPlan').addEventListener('click', () => { if (confirm('Reset to the Harbo
 $('exportProject').addEventListener('click', () => { download(`${plan.festivalName.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'patchwork-plan'}.patchwork.json`, serialize(plan), 'application/json'); toast('Project exported.'); });
 $('timetableExport').addEventListener('click', () => { download('patchwork-timetable.csv', timetableCsv(plan), 'text/csv'); toast('Timetable CSV exported.'); });
 $('importProject').addEventListener('click', () => $('filePicker').click());
-$('filePicker').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; try { const imported = normalizePlan(JSON.parse(await file.text())); plan = imported; state.plan = plan; render(); save(true); toast('Project reopened successfully.'); } catch (error) { toast(`Import failed: ${error.message} Current plan is unchanged.`, 'error'); } event.target.value = ''; });
+function importText(raw) { try { const imported = normalizePlan(JSON.parse(raw)); plan = imported; pendingRevision = null; state.plan = plan; render(); save(true); toast('Project reopened successfully.'); } catch (error) { toast(`Import failed: ${error.message} Current plan is unchanged.`, 'error'); } }
+$('pasteImport').addEventListener('click', () => importText($('importText').value));
+$('filePicker').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; importText(await file.text()); event.target.value = ''; });
 window.addEventListener('beforeunload', () => save(true));
 render();
