@@ -10,10 +10,12 @@
 | Conflict inspection/resolution | conflict panel and force-preserve path | Implemented |
 | Accept and undo whole revision | revision snapshot in `lastRevision` | Implemented |
 | Rename/delete/duplicate identity | IDs are stable or freshly generated | Implemented |
-| Save/reload | localStorage on save/unload and startup load | Implemented |
+| Save/reload | Normal save/reload observed in Chromium on the deployed URL; blocked/quota recovery is covered by source handling and tests, not browser-observed | Normal path passed; storage-failure browser evidence pending |
 | Portable export/reopen | schemaVersion 1 JSON round trip | Implemented |
-| Malformed import recovery | validation rejects without replacing current plan | Implemented |
+| Malformed import recovery | Strict validation and atomic preservation are unit-covered; actual browser file-picker journey was not observed | Source/test evidence only |
 | Usable timetable export | quoted CSV with time, stage, act, audience, budget | Implemented |
-| Desktop Chromium journey | Must be recorded during QA | Pending browser QA |
-| Narrow mobile journey | Must be recorded during QA | Pending browser QA |
+| Desktop Chromium journey | Exact SHA `78011dd014367a28a09a1a67a309e411a41e10d0`: edit, preview gating, accept, whole undo, linked views, save, reload, project/CSV export; isolated port `48106` and production URL | Passed |
+| Narrow mobile journey | Effective narrow viewport verified locally at 390x844 and on production; brief, linked views and health surface remained reachable | Passed |
 | Safari | Not tested | Unverified |
+
+Browser evidence is intentionally bounded: blocked/quota localStorage behavior and malformed JSON via the browser file picker were not claimed as browser-observed. Their strict handling remains covered by source inspection and the automated engine tests.
