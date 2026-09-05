@@ -14,7 +14,7 @@
 | Portable export/reopen | schemaVersion 1 JSON round trip | Implemented |
 | Malformed import recovery | Strict validation and atomic preservation are unit-covered; actual browser file-picker journey was not observed | Source/test evidence only |
 | Usable timetable export | quoted CSV with time, stage, act, audience, budget | Implemented |
-| Desktop Chromium journey | Exact SHA `78011dd014367a28a09a1a67a309e411a41e10d0`: edit, preview gating, accept, whole undo, linked views, save, reload, project/CSV export; isolated port `48106` and production URL | Passed |
+| Desktop Chromium journey | Final source commit recorded in the owner report: edit, preview gating, accept, whole undo, linked views, save, reload, project/CSV export; isolated port `48106` and production URL | Passed |
 | Narrow mobile journey | Effective narrow viewport verified locally at 390x844 and on production; brief, linked views and health surface remained reachable | Passed |
 | Safari | Not tested | Unverified |
 
