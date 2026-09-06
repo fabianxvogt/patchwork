@@ -46,8 +46,9 @@
         </div>
       </main>
 
-      <footer class="bottom-bar"><span><span class="keyboard-key">⌘</span> All edits are local and exportable</span><div><button class="text-button" id="timetableExport">Export timetable</button><button class="text-button danger-link" id="resetPlan">Reset</button></div></footer>
+      <footer class="bottom-bar"><span><span class="keyboard-key">⌘</span> All edits are local and exportable</span><div><button class="text-button" id="timetablePrint">Print timetable</button><button class="text-button" id="timetableExport">Export CSV</button><button class="text-button danger-link" id="resetPlan">Reset</button></div></footer>
     </div>
+    <section class="print-sheet" id="printSheet" aria-hidden="true"></section>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script type="module" src="app.js?v=2"></script>
   </body>
