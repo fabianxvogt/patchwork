@@ -1,3 +1,13 @@
+<!-- portfolio
+{
+  "title": "Patchwork",
+  "topic": "Play & products/Useful software",
+  "type": "product",
+  "description": "Browser-first festival planning workbench with linked schedule, budget, equipment, and explicit constraint conflicts.",
+  "demo": "https://patchwork-festival-planner.fabian523417.chatgpt.site"
+}
+-->
+
 # Patchwork
 
 Patchwork is a browser-first festival planning workbench for Project 65. It reshapes an invented festival brief while retaining deliberate decisions: a bounded rule engine regenerates linked schedule, budget and equipment views, then makes conflicts explicit when pins cannot move.
